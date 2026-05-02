@@ -1,53 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AMS Admin Login</title>
+  <title>Admin Login</title>
 </head>
-
 <body>
 
 <h2>Admin Login</h2>
 
-<input id="email" placeholder="Enter Email"><br><br>
-<button onclick="sendOtp()">Send OTP</button><br><br>
+<input id="username" placeholder="Enter Username"><br><br>
+<input id="password" type="password" placeholder="Enter Password"><br><br>
 
-<input id="otp" placeholder="Enter OTP"><br><br>
-<button onclick="verifyOtp()">Login</button>
+<button onclick="login()">Login</button>
 
 <script>
-
 const backend = "https://amsareescentre-backend.onrender.com";
 
-async function sendOtp() {
-  await fetch(backend + "/send-otp", {
+async function login() {
+  let res = await fetch(backend + "/login", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      email: document.getElementById("email").value
-    })
-  });
-  alert("OTP sent to email");
-}
-
-async function verifyOtp() {
-  let res = await fetch(backend + "/verify-otp", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      email: document.getElementById("email").value,
-      otp: document.getElementById("otp").value
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value
     })
   });
 
   let data = await res.json();
 
-  if(data.success) {
+  if(data.success){
     alert("Login Success");
   } else {
-    alert("Wrong OTP");
+    alert("Wrong Username or Password");
   }
 }
-
 </script>
 
 </body>
