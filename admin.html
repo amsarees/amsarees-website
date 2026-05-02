@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>AMS Sarees Admin Login</h2>
+
+<input id="username" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<script>
+const backend = "";
+
+async function login() {
+  let res = await fetch("/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value
+    })
+  });
+
+  let data = await res.json();
+
+  if(data.success){
+    alert("Login Success");
+  } else {
+    alert("Wrong Username or Password");
+  }
+}
+</script>
+
+</body>
+</html>
