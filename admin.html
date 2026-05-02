@@ -2,16 +2,29 @@
 <html>
 <body>
 
-<h2>AMS Sarees Admin Login</h2>
+<h2>AMS Sarees Admin</h2>
 
+<h3>Login</h3>
 <input id="username" placeholder="Username"><br><br>
 <input id="password" type="password" placeholder="Password"><br><br>
-
 <button onclick="login()">Login</button>
 
-<script>
-const backend = "";
+<div id="panel" style="display:none;">
 
+<h3>Add Product</h3>
+
+<input id="name" placeholder="Product Name"><br><br>
+<input id="price" placeholder="Price"><br><br>
+<input id="image" placeholder="Image URL"><br><br>
+
+<button onclick="addProduct()">Add Product</button>
+
+<h3>Products</h3>
+<div id="products"></div>
+
+</div>
+
+<script>
 async function login() {
   let res = await fetch("/login", {
     method: "POST",
@@ -25,10 +38,44 @@ async function login() {
   let data = await res.json();
 
   if(data.success){
-    alert("Login Success");
+    document.getElementById("panel").style.display = "block";
+    loadProducts();
   } else {
-    alert("Wrong Username or Password");
+    alert("Wrong login");
   }
+}
+
+async function addProduct() {
+  await fetch("/add-product", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      name: document.getElementById("name").value,
+      price: document.getElementById("price").value,
+      image: document.getElementById("image").value
+    })
+  });
+
+  alert("Product Added");
+  loadProducts();
+}
+
+async function loadProducts() {
+  let res = await fetch("/products");
+  let data = await res.json();
+
+  let html = "";
+
+  data.forEach(p => {
+    html += `
+      <div>
+        <img src="${p.image}" width="100"><br>
+        ${p.name} - ₹${p.price}
+      </div><br>
+    `;
+  });
+
+  document.getElementById("products").innerHTML = html;
 }
 </script>
 
