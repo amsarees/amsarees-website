@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header><div class="logo">ADMIN PANEL</div></header>
+
+<div class="container">
+
+<form id="loginForm">
+<input id="username" placeholder="Username">
+<input id="password" placeholder="Password">
+<button class="btn">Login</button>
+</form>
+
+<form id="uploadForm" style="display:none" enctype="multipart/form-data">
+<input name="name" placeholder="Name">
+<input name="price" placeholder="Price">
+<input name="category" placeholder="Category">
+<input type="file" name="image">
+<button class="btn">Upload</button>
+</form>
+
+</div>
+
+<script>
+loginForm.onsubmit = async (e)=>{
+e.preventDefault();
+
+let r = await fetch("/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+username:username.value,
+password:password.value
+})
+});
+
+let d = await r.json();
+
+if(d.success){
+uploadForm.style.display="block";
+loginForm.style.display="none";
+}
+};
+
+uploadForm.onsubmit = async (e)=>{
+e.preventDefault();
+
+let f = new FormData(uploadForm);
+
+await fetch("/add-product",{method:"POST",body:f});
+
+alert("Uploaded");
+};
+</script>
+
+</body>
+</html>
