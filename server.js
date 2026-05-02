@@ -1,11 +1,17 @@
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
+const fs = require("fs");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static(__dirname));
+
+// create uploads folder
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 // storage setup
 const storage = multer.diskStorage({
@@ -18,12 +24,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-// create uploads folder
-const fs = require("fs");
-if (!fs.existsSync("uploads")) {
-  fs.mkdirSync("uploads");
-}
 
 app.use("/uploads", express.static("uploads"));
 
