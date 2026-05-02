@@ -5,14 +5,14 @@ const app = express();
 
 app.use(express.json());
 
-// LOGIN DETAILS
-const USERNAME = "amsareescentre";
-const PASSWORD = "amsarees786@";
-
-// SHOW admin.html on HOME
+// SHOW LOGIN PAGE ON HOME
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
+
+// LOGIN DETAILS
+const USERNAME = "amsareescentre";
+const PASSWORD = "amsarees786@";
 
 // LOGIN API
 app.post("/login", (req, res) => {
@@ -25,5 +25,6 @@ app.post("/login", (req, res) => {
   }
 });
 
+// START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running"));
