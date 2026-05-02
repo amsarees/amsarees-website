@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<div class="logo">A M SAREES CENTRE</div>
+</header>
+
+<div class="container" id="detail"></div>
+
+<script>
+const id = new URLSearchParams(location.search).get("id");
+
+async function load(){
+  let res = await fetch("/products");
+  let data = await res.json();
+
+  let p = data.find(x=>x.id==id);
+
+  document.getElementById("detail").innerHTML = `
+    <div class="card">
+      <img src="${p.image}">
+      <h2>${p.name}</h2>
+      <h3>₹${p.price}</h3>
+      <p>${p.category}</p>
+
+      <a href="https://wa.me/919395142435?text=I want ${p.name}">
+        <button class="btn">Order on WhatsApp</button>
+      </a>
+    </div>
+  `;
+}
+
+load();
+</script>
+
+</body>
+</html>
