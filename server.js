@@ -2,10 +2,16 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use(express.static(__dirname));
-// YOUR LOGIN DETAILS
-const USERNAME = "amsarees";
-const PASSWORD = "786@";
+app.use(express.static(__dirname)); // serve html files
+
+// homepage
+app.get("/", (req, res) => {
+  res.send("AMSAREES WEBSITE WORKING ✅");
+});
+
+// login details
+const USERNAME = "amsareescentre";
+const PASSWORD = "amsarees786@";
 
 // login API
 app.post("/login", (req, res) => {
