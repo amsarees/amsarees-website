@@ -68,11 +68,15 @@ async function loadProducts() {
 
   data.forEach(p => {
     html += `
-      <div>
-        <img src="${p.image}" width="120"><br>
-        ${p.name} - ₹${p.price}
-      </div><br>
-    `;
+  <div>
+    <img src="${p.image}" width="120"><br>
+    ${p.name} - ₹${p.price}<br><br>
+
+    <a href="https://wa.me/919395142435?text=I want this product: ${p.name} - ₹${p.price}" target="_blank">
+      <button>Order on WhatsApp</button>
+    </a>
+  </div><br>
+`;
   });
 
   document.getElementById("products").innerHTML = html;
