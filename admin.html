@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>AMS Admin Login</title>
+</head>
+
 <body>
 
 <h2>Admin Login</h2>
@@ -11,13 +15,16 @@
 <button onclick="verifyOtp()">Login</button>
 
 <script>
+
 const backend = "https://amsareescentre-backend.onrender.com";
 
 async function sendOtp() {
   await fetch(backend + "/send-otp", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({email: document.getElementById("email").value})
+    body: JSON.stringify({
+      email: document.getElementById("email").value
+    })
   });
   alert("OTP sent to email");
 }
@@ -33,9 +40,14 @@ async function verifyOtp() {
   });
 
   let data = await res.json();
-  if(data.success) alert("Login Success");
-  else alert("Wrong OTP");
+
+  if(data.success) {
+    alert("Login Success");
+  } else {
+    alert("Wrong OTP");
+  }
 }
+
 </script>
 
 </body>
