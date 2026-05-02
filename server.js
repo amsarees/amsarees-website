@@ -1,46 +1,23 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
-const cors = require("cors");
-
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
 
-let otpStore = {};
+app.use(express.json());
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "a.m.sareescentre@gmail.com",
-    pass: "YOUR_APP_PASSWORD"
-  }
-});
+// YOUR LOGIN DETAILS
+const USERNAME = "amsarees";
+const PASSWORD = "786@";
 
-app.post("/send-otp", async (req, res) => {
-  const { email } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000);
+// login API
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
 
-  otpStore[email] = otp;
-
-  await transporter.sendMail({
-    from: "A.M Sarees",
-    to: email,
-    subject: "Your OTP Login",
-    text: `Your OTP is ${otp}`
-  });
-
-  res.send({ success: true });
-});
-
-app.post("/verify-otp", (req, res) => {
-  const { email, otp } = req.body;
-
-  if (otpStore[email] == otp) {
-    res.send({ success: true });
+  if (username === USERNAME && password === PASSWORD) {
+    res.json({ success: true });
   } else {
-    res.send({ success: false });
+    res.json({ success: false });
   }
 });
 
-app.listen(3000, () => console.log("Server running"));
+// start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server running"));
