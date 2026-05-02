@@ -15,7 +15,7 @@
 
 <input id="name" placeholder="Product Name"><br><br>
 <input id="price" placeholder="Price"><br><br>
-<input id="image" placeholder="Image URL"><br><br>
+<input type="file" id="image"><br><br>
 
 <button onclick="addProduct()">Add Product</button>
 
@@ -46,14 +46,14 @@ async function login() {
 }
 
 async function addProduct() {
+  let formData = new FormData();
+  formData.append("name", document.getElementById("name").value);
+  formData.append("price", document.getElementById("price").value);
+  formData.append("image", document.getElementById("image").files[0]);
+
   await fetch("/add-product", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      name: document.getElementById("name").value,
-      price: document.getElementById("price").value,
-      image: document.getElementById("image").value
-    })
+    body: formData
   });
 
   alert("Product Added");
