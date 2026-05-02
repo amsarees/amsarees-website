@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-
+app.get("/", (req, res) => {
+  res.send("AMSAREES WEBSITE WORKING ✅");
+});
 // YOUR LOGIN DETAILS
 const USERNAME = "amsarees";
 const PASSWORD = "786@";
