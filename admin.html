@@ -11,7 +11,7 @@
 <button onclick="verifyOtp()">Login</button>
 
 <script>
-const backend = "YOUR_BACKEND_URL";
+const backend = "https://amsareescentre-backend.onrender.com";
 
 async function sendOtp() {
   await fetch(backend + "/send-otp", {
