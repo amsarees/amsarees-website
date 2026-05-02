@@ -1,12 +1,33 @@
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// STORE PRODUCTS (temporary memory)
+// storage setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+// create uploads folder
+const fs = require("fs");
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
+
+app.use("/uploads", express.static("uploads"));
+
+// products
 let products = [];
 
 // show admin page
@@ -28,15 +49,17 @@ app.post("/login", (req, res) => {
   }
 });
 
-// ADD PRODUCT
-app.post("/add-product", (req, res) => {
-  const { name, price, image } = req.body;
+// upload product
+app.post("/add-product", upload.single("image"), (req, res) => {
+  const name = req.body.name;
+  const price = req.body.price;
+  const image = "/uploads/" + req.file.filename;
 
   products.push({ name, price, image });
   res.json({ success: true });
 });
 
-// GET PRODUCTS
+// get products
 app.get("/products", (req, res) => {
   res.json(products);
 });
