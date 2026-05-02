@@ -1,61 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin</title>
+<title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header><div class="logo">ADMIN PANEL</div></header>
+<header>
+<div class="logo">🔐 ADMIN PANEL</div>
+</header>
 
 <div class="container">
 
+<!-- LOGIN -->
 <form id="loginForm">
-<input id="username" placeholder="Username">
-<input id="password" placeholder="Password">
-<button class="btn">Login</button>
+  <h2>Admin Login</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" placeholder="Password" type="password">
+  <button class="btn">Login</button>
 </form>
 
+<!-- UPLOAD -->
 <form id="uploadForm" style="display:none" enctype="multipart/form-data">
-<input name="name" placeholder="Name">
-<input name="price" placeholder="Price">
-<input name="category" placeholder="Category">
-<input type="file" name="image">
-<button class="btn">Upload</button>
+  <h2>Add Product</h2>
+
+  <input name="name" placeholder="Product Name">
+  <input name="price" placeholder="Price">
+  <input name="category" placeholder="Category">
+  <input type="file" name="image">
+
+  <button class="btn">Upload</button>
 </form>
 
 </div>
 
 <script>
+const loginForm = document.getElementById("loginForm");
+const uploadForm = document.getElementById("uploadForm");
+
+// LOGIN
 loginForm.onsubmit = async (e)=>{
-e.preventDefault();
+  e.preventDefault();
 
-let r = await fetch("/login",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-username:username.value,
-password:password.value
-})
-});
+  let res = await fetch("/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value
+    })
+  });
 
-let d = await r.json();
+  let data = await res.json();
 
-if(d.success){
-uploadForm.style.display="block";
-loginForm.style.display="none";
-}
+  if(data.success){
+    alert("Login Success");
+    uploadForm.style.display = "block";
+    loginForm.style.display = "none";
+  } else {
+    alert("Wrong Login");
+  }
 };
 
+// UPLOAD PRODUCT
 uploadForm.onsubmit = async (e)=>{
-e.preventDefault();
+  e.preventDefault();
 
-let f = new FormData(uploadForm);
+  let formData = new FormData(uploadForm);
 
-await fetch("/add-product",{method:"POST",body:f});
+  let res = await fetch("/add-product",{
+    method:"POST",
+    body: formData
+  });
 
-alert("Uploaded");
+  let data = await res.json();
+
+  if(data.success){
+    alert("Product Uploaded");
+  }
 };
 </script>
 
