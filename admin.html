@@ -1,84 +1,51 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
 <body>
 
-<header>
-<div class="logo">🔐 ADMIN PANEL</div>
-</header>
+<h2>Admin Login</h2>
+<input id="u" placeholder="username">
+<input id="p" placeholder="password">
+<button onclick="login()">Login</button>
 
-<div class="container">
+<div id="panel" style="display:none">
 
-<!-- LOGIN -->
-<form id="loginForm">
-  <h2>Admin Login</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" placeholder="Password" type="password">
-  <button class="btn">Login</button>
+<button onclick="logout()">Logout</button>
+
+<h2>Add Product</h2>
+<form id="f" enctype="multipart/form-data">
+<input name="name" placeholder="name">
+<input name="price" placeholder="price">
+<input name="category" placeholder="category">
+<input type="file" name="image">
+<button>Add</button>
 </form>
 
-<!-- UPLOAD -->
-<form id="uploadForm" style="display:none" enctype="multipart/form-data">
-  <h2>Add Product</h2>
-
-  <input name="name" placeholder="Product Name">
-  <input name="price" placeholder="Price">
-  <input name="category" placeholder="Category">
-  <input type="file" name="image">
-
-  <button class="btn">Upload</button>
-</form>
+<h2>Products</h2>
+<div id="products"></div>
 
 </div>
 
+<script src="script.js"></script>
+
 <script>
-const loginForm = document.getElementById("loginForm");
-const uploadForm = document.getElementById("uploadForm");
+async function login(){
+let r=await fetch("/login",{method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({username:u.value,password:p.value})});
+let d=await r.json();
+if(d.success){panel.style.display="block";}
+}
 
-// LOGIN
-loginForm.onsubmit = async (e)=>{
-  e.preventDefault();
+async function logout(){
+await fetch("/logout");
+location.reload();
+}
 
-  let res = await fetch("/login",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      username: username.value,
-      password: password.value
-    })
-  });
-
-  let data = await res.json();
-
-  if(data.success){
-    alert("Login Success");
-    uploadForm.style.display = "block";
-    loginForm.style.display = "none";
-  } else {
-    alert("Wrong Login");
-  }
-};
-
-// UPLOAD PRODUCT
-uploadForm.onsubmit = async (e)=>{
-  e.preventDefault();
-
-  let formData = new FormData(uploadForm);
-
-  let res = await fetch("/add-product",{
-    method:"POST",
-    body: formData
-  });
-
-  let data = await res.json();
-
-  if(data.success){
-    alert("Product Uploaded");
-  }
+f.onsubmit=async(e)=>{
+e.preventDefault();
+let fd=new FormData(f);
+await fetch("/add-product",{method:"POST",body:fd});
+alert("Added");
 };
 </script>
 
