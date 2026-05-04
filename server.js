@@ -20,8 +20,8 @@ app.use(session({
 // CLOUDINARY
 cloudinary.config({
   cloud_name: "dqdfdfzqd",
-  api_key: "YOUR_API_KEY",
-  api_secret: "YOUR_API_SECRET"
+  api_key: "247257614836121",
+  api_secret: "VVvMvdZjmmMbRJ_77EYF5VYybjs"
 });
 
 // DATA
