@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Arrivals – A.M. Sarees Centre</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>…same nav…</header>
+  <h2>New Arrivals</h2>
+  <div id="newProducts"></div>
+
+  <script>
+    fetch("https://amsareescentre-backend.onrender.com/products")
+      .then(res => res.json())
+      .then(data => {
+        data.filter(p => p.new === true).forEach(product => {
+          document.querySelector("#newProducts").innerHTML += `
+            <div class="product">
+              <img src="${product.image}" alt="${product.name}">
+              <h3>${product.name}</h3>
+              <p>₹${product.price}</p>
+              <a href="https://wa.me/9395142435?text=Order ${product.name}">Order on WhatsApp</a>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>
