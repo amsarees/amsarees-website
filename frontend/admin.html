@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - A.M. Sarees Centre</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fff8e1; color:#333; }
+    .login, .form { max-width:400px; margin:50px auto; padding:20px; border:1px solid #ccc; background:#fff; }
+    h2 { text-align:center; color:#000; }
+    input, button { width:100%; padding:10px; margin:10px 0; }
+    button { background:gold; border:none; color:#000; font-weight:bold; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="login" id="loginBox">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="form" id="formBox" style="display:none;">
+    <h2>Add Product</h2>
+    <input type="text" id="name" placeholder="Product Name">
+    <input type="number" id="price" placeholder="Price">
+    <input type="text" id="quantity" placeholder="Quantity (leave blank if none)">
+    <input type="text" id="image" placeholder="Image URL">
+    <button onclick="addProduct()">Add Product</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if(user === "amsareescentre" && pass === "amsarees786@") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("formBox").style.display = "block";
+      } else {
+        alert("Invalid login!");
+      }
+    }
+
+    function addProduct() {
+      const product = {
+        name: document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        quantity: document.getElementById("quantity").value,
+        image: document.getElementById("image").value
+      };
+
+      fetch("https://amsareescentre-backend.onrender.com/add-product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("message").innerText = data.message;
+      });
+    }
+  </script>
+</body>
+</html>
