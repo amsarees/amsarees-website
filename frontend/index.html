@@ -1,0 +1,19 @@
+fetch("https://amsareescentre-backend.onrender.com/products")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(product => {
+      const quantityText = product.quantity ? `<p>Quantity: ${product.quantity}</p>` : "";
+      document.querySelector("#catalogue").innerHTML += `
+        <div class="product">
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>₹${product.price}</p>
+          ${quantityText}
+          <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
+            Order on WhatsApp
+          </a>
+        </div>
+      `;
+    });
+  });
+  
