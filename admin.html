@@ -1,53 +1,44 @@
-<!DOCTYPE html>
-<html>
-<body>
+<header class="topbar">
 
-<h2>Admin Login</h2>
-<input id="u" placeholder="username">
-<input id="p" placeholder="password">
-<button onclick="login()">Login</button>
+  <div>📞 9395142435 9849258288 | WhatsApp Us</div>
+</header>
 
-<div id="panel" style="display:none">
+<header class="navbar">
+  <div class="logo">A.M SAREES CENTRE</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Collections</a>
+    <a href="#">New Arrivals</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
 
-<button onclick="logout()">Logout</button>
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>SAREES THAT DEFINE YOU</h1>
+    <p>Traditional • Elegant • Timeless</p>
+    <button>SHOP NOW</button>
+  </div>
+</section>
 
-<h2>Add Product</h2>
-<form id="f" enctype="multipart/form-data">
-<input name="name" placeholder="name">
-<input name="price" placeholder="price">
-<input name="category" placeholder="category">
-<input type="file" name="image">
-<button>Add</button>
-</form>
+<!-- FEATURES -->
+<section class="features">
+  
+  <div>✔ Quality Assured</div>
+  
+  <div>📞 Support</div>
+</section>
 
-<h2>Products</h2>
-<div id="products"></div>
+<!-- PRODUCTS -->
+<section class="container">
+  <h2>OUR COLLECTIONS</h2>
+  <div id="products" class="grid"></div>
+</section>
 
-</div>
-
-<script src="script.js"></script>
-
-<script>
-async function login(){
-let r=await fetch("/login",{method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({username:u.value,password:p.value})});
-let d=await r.json();
-if(d.success){panel.style.display="block";}
-}
-
-async function logout(){
-await fetch("/logout");
-location.reload();
-}
-
-f.onsubmit=async(e)=>{
-e.preventDefault();
-let fd=new FormData(f);
-await fetch("/add-product",{method:"POST",body:fd});
-alert("Added");
-};
-</script>
-
-</body>
-</html>
+<!-- FOOTER -->
+<footer>
+  <p>📍 s.no 21-1-579 Near 94 Bus Stop, High Court Road, Hyderabad</p>
+  <p>📞 9395142435 | WhatsApp: 9395142435</p>
+</footer>
