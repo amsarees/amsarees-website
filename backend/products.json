@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Soft Silk Saree",
+    "price": 1699,
+    "quantity": 10,
+    "image": "https://via.placeholder.com/200x250?text=Soft+Silk+Saree"
+  },
+  {
+    "name": "Cotton Saree",
+    "price": 1499,
+    "quantity": "",
+    "image": "https://via.placeholder.com/200x250?text=Cotton+Saree"
+  }
+]
