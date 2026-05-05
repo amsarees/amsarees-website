@@ -1,29 +1,46 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
+const multer = require("multer");
+const path = require("path");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Read products.json file
-function getProducts() {
-  const data = fs.readFileSync("products.json");
-  return JSON.parse(data);
-}
+// Static folder for uploaded images
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Get products
+// Storage setup for multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // images will be saved here
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// In-memory product list (replace with DB if needed)
+let products = [];
+
+// Route: Get all products
 app.get("/products", (req, res) => {
-  const products = getProducts();
   res.json(products);
 });
 
-// Add product
-app.post("/add-product", (req, res) => {
-  const products = getProducts();
-  products.push(req.body);
-  fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
-  res.json({ message: "Product added successfully!" });
+// Route: Add product with image upload
+app.post("/add-product", upload.single("image"), (req, res) => {
+  const { name, price, quantity } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
+
+  const product = { name, price, quantity, image: imageUrl };
+  products.push(product);
+
+  res.json({ message: "Product added successfully!", product });
 });
 
-app.listen(3000, () => console.log("Backend running on port 3000"));
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
