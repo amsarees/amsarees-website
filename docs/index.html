@@ -4,20 +4,67 @@
   <meta charset="UTF-8">
   <title>A.M. Sarees Centre</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#fff8e1; color:#333; margin:0; padding:20px; }
-    h1 { text-align:center; color:#000; }
-    .product { border:1px solid #ccc; padding:15px; margin:15px; background:#fff; }
-    .product img { max-width:200px; display:block; margin-bottom:10px; }
-    .product h3 { margin:5px 0; }
-    .product p { margin:5px 0; }
-    .product a { display:inline-block; margin-top:10px; background:gold; padding:8px 12px; text-decoration:none; color:#000; font-weight:bold; }
+    body { font-family: Arial, sans-serif; background:#fff8e1; color:#333; margin:0; padding:0; }
+    header { background:#000; color:gold; padding:15px; text-align:center; }
+    nav a { margin:0 10px; color:gold; text-decoration:none; font-weight:bold; }
+    .banner { background:#663399; color:#fff; text-align:center; padding:50px 20px; }
+    .banner h2 { margin:0; font-size:28px; }
+    .banner p { margin:10px 0; font-size:18px; }
+    .banner button { background:gold; border:none; padding:10px 20px; font-weight:bold; cursor:pointer; }
+    .highlights { display:flex; justify-content:space-around; padding:20px; background:#fff; }
+    .collections { padding:20px; }
+    .collections h2 { text-align:center; margin-bottom:20px; }
+    #catalogue { display:flex; flex-wrap:wrap; justify-content:center; }
+    .product { border:1px solid #ccc; margin:10px; padding:15px; background:#fff; width:200px; text-align:center; }
+    .product img { max-width:100%; height:auto; margin-bottom:10px; }
+    .product a { display:block; margin-top:10px; background:gold; padding:8px; text-decoration:none; color:#000; font-weight:bold; }
+    aside.admin-mockup { border:1px solid #ccc; padding:15px; margin:20px; background:#fff; }
+    footer { background:#000; color:#fff; text-align:center; padding:15px; }
   </style>
 </head>
 <body>
-  <h1>Welcome to A.M. Sarees Centre</h1>
+  <header>
+    <h1>A.M. Sarees Centre – Elegance in Every Drape</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Collections</a>
+      <a href="#">New Arrivals</a>
+      <a href="#">About Us</a>
+      <a href="#">Contact Us</a>
+    </nav>
+  </header>
 
-  <!-- Yahan products appear honge -->
-  <div id="catalogue"></div>
+  <section class="banner">
+    <h2>NEW COLLECTION – SAREES THAT DEFINE YOU</h2>
+    <p>TRADITIONAL • ELEGANT • TIMELESS</p>
+    <button>SHOP NOW</button>
+  </section>
+
+  <section class="highlights">
+    <div>QUALITY ASSURED – Best quality products</div>
+    <div>CUSTOMER SUPPORT – +91 9395142435</div>
+  </section>
+
+  <section class="collections">
+    <h2>OUR COLLECTIONS</h2>
+    <div id="catalogue"></div>
+  </section>
+
+  <aside class="admin-mockup">
+    <h3>A.M. Sarees Centre – Admin Panel</h3>
+    <p>Username: amsareescentre</p>
+    <p>Password: ********</p>
+    <button>Add Product</button>
+    <button>Upload Photo</button>
+    <button>Edit Details</button>
+    <button>Delete Product</button>
+    <button>Manage Inventory</button>
+  </aside>
+
+  <footer>
+    <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.G.)</p>
+    <p>Phone: 9395142435, 9849258288</p>
+  </footer>
 
   <script>
     fetch("https://amsareescentre-backend.onrender.com/products")
