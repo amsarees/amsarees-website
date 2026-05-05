@@ -1,20 +1,43 @@
-<script>
-fetch("https://amsareescentre-backend.onrender.com/products")
-  .then(res => res.json())
-  .then(data => {
-    data.forEach(product => {
-      const quantityText = product.quantity ? `<p>Quantity: ${product.quantity}</p>` : "";
-      document.querySelector("#catalogue").innerHTML += `
-        <div class="product">
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>₹${product.price}</p>
-          ${quantityText}
-          <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
-            Order on WhatsApp
-          </a>
-        </div>
-      `;
-    });
-  });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A.M. Sarees Centre</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fff8e1; color:#333; margin:0; padding:20px; }
+    h1 { text-align:center; color:#000; }
+    .product { border:1px solid #ccc; padding:15px; margin:15px; background:#fff; }
+    .product img { max-width:200px; display:block; margin-bottom:10px; }
+    .product h3 { margin:5px 0; }
+    .product p { margin:5px 0; }
+    .product a { display:inline-block; margin-top:10px; background:gold; padding:8px 12px; text-decoration:none; color:#000; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to A.M. Sarees Centre</h1>
+
+  <!-- Yahan products appear honge -->
+  <div id="catalogue"></div>
+
+  <script>
+    fetch("https://amsareescentre-backend.onrender.com/products")
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(product => {
+          const quantityText = product.quantity ? `<p>Quantity: ${product.quantity}</p>` : "";
+          document.querySelector("#catalogue").innerHTML += `
+            <div class="product">
+              <img src="${product.image}" alt="${product.name}">
+              <h3>${product.name}</h3>
+              <p>₹${product.price}</p>
+              ${quantityText}
+              <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
+                Order on WhatsApp
+              </a>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>
