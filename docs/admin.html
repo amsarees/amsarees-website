@@ -15,11 +15,11 @@
 
   <div id="adminPanel" style="display:none;">
     <h3>Manage Products</h3>
-    <form id="addProductForm">
+    <form id="addProductForm" enctype="multipart/form-data">
       <input type="text" placeholder="Product Name" id="name">
       <input type="number" placeholder="Price" id="price">
       <input type="number" placeholder="Quantity" id="quantity">
-      <input type="text" placeholder="Image URL" id="image">
+      <input type="file" id="image" accept="image/*"> <!-- gallery se photo select -->
       <button type="submit">Add Product</button>
     </form>
 
@@ -48,21 +48,22 @@
       }
     });
 
-    document.getElementById("addProductForm").addEventListener("submit", function(e) {
+    document.getElementById("addProductForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const product = {
-        name: document.getElementById("name").value,
-        price: document.getElementById("price").value,
-        quantity: document.getElementById("quantity").value,
-        image: document.getElementById("image").value
-      };
-      fetch("https://amsareescentre-backend.onrender.com/add-product", {
+
+      const formData = new FormData();
+      formData.append("name", document.getElementById("name").value);
+      formData.append("price", document.getElementById("price").value);
+      formData.append("quantity", document.getElementById("quantity").value);
+      formData.append("image", document.getElementById("image").files[0]);
+
+      const res = await fetch("https://amsareescentre-backend.onrender.com/add-product", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(product)
-      }).then(res => res.json()).then(data => {
-        alert("Product added successfully!");
+        body: formData
       });
+
+      const data = await res.json();
+      alert("Product added successfully!");
     });
 
     function saveAbout() {
