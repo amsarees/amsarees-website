@@ -41,11 +41,21 @@ nav a {
   color: #000;
 }
 
-.collections {
+.new-arrivals, .collections {
+  padding: 20px;
+  background: #fff;
+}
+
+.new-arrivals h3, .collections h3 {
+  text-align: center;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+#newProducts, #allProducts {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 20px;
 }
 
 .product {
@@ -72,11 +82,4 @@ nav a {
   color: #000;
   font-weight: bold;
   border-radius: 4px;
-}
-
-footer {
-  background: #000;
-  color: #fff;
-  text-align: center;
-  padding: 15px;
 }
