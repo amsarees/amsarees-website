@@ -47,6 +47,13 @@ app.get("/products", (req, res) => {
   res.json(products);
 });
 
+// Delete product
+app.delete("/delete-product/:id", (req, res) => {
+  const productId = parseInt(req.params.id);
+  products = products.filter(p => p.id !== productId);
+  res.json({ message: "Product deleted successfully!", id: productId });
+});
+
 // Save About Us
 app.post("/save-about", (req, res) => {
   aboutInfo = req.body.about;
