@@ -1,128 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Collections - A.M. Sarees Centre</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fdf6e3; margin: 0; }
-    header {
-      background: black;
-      color: gold;
-      padding: 10px;
-      text-align: center;
-    }
-    header img {
-      height: 60px;
-      vertical-align: middle;
-    }
-    nav a {
-      color: gold;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-    .banner {
-      background: url("banner.jpg") no-repeat center center;
-      background-size: cover;
-      height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .product {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px;
-      display: inline-block;
-      width: 200px;
-      text-align: center;
-      background: white;
-    }
-    .product img { max-width: 150px; height: auto; }
-    footer {
-      background: black;
-      color: gold;
-      text-align: center;
-      padding: 15px;
-      margin-top: 20px;
-    }
-  </style>
+  <title>Collections</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- ✅ Header with Logo -->
-  <header>
-    <img src="logo.png" alt="A.M. Sarees Logo">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="collections.html">Collections</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="cart.html">Cart</a>
-    </nav>
-  </header>
+<header>
+  <img src="images/logo.png" alt="Logo">
+  <h1>A.M. Sarees Centre</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
 
-  <!-- ✅ Banner -->
-  <div class="banner">Our Collections</div>
+<h2>Our Collections</h2>
+<div id="collections"></div>
 
-  <!-- ✅ Products Section -->
-  <h2 style="text-align:center;">All Products</h2>
-  <div id="products" style="text-align:center;"></div>
+<script>
+fetch("https://amsareescentre-backend.onrender.com/products")
+  .then(res => res.json())
+  .then(products => {
+    const container = document.getElementById("collections");
+    products.forEach(p => {
+      container.innerHTML += `
+        <div class="product">
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <button onclick="addToCart('${p._id}')">Add to Cart</button>
+        </div>
+      `;
+    });
+  });
 
-  <!-- ✅ Footer with Address -->
-  <footer>
-    <p>A.M. Sarees Centre</p>
-    <p>Shop No. 12, Laad Bazaar, Hyderabad</p>
-    <p>📞 9395142435</p>
-  </footer>
-
-  <script>
-    function loadProducts() {
-      fetch("https://amsareescentre-backend.onrender.com/products")
-        .then(res => res.json())
-        .then(products => {
-          const container = document.getElementById("products");
-          container.innerHTML = "";
-          products.forEach(p => {
-            container.innerHTML += `
-              <div class="product">
-                <img src="${p.image}" alt="${p.name}">
-                <h3>${p.name}</h3>
-                <p>Price: ₹${p.price}</p>
-                <p>Quantity: ${p.quantity}</p>
-                <button onclick="addToCart(${p.id})">Add to Cart</button>
-              </div>
-            `;
-          });
-        })
-        .catch(err => console.error("Error loading products:", err));
-    }
-
-    function addToCart(id) {
-      fetch("https://amsareescentre-backend.onrender.com/products")
-        .then(res => res.json())
-        .then(products => {
-          const product = products.find(p => p.id == id);
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          let existing = cart.find(item => item.id == id);
-          if (existing) {
-            existing.qty += 1;
-          } else {
-            cart.push({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-              qty: 1
-            });
-          }
-          localStorage.setItem("cart", JSON.stringify(cart));
-          alert(product.name + " added to cart!");
-        });
-    }
-
-    loadProducts();
-  </script>
+function addToCart(id) {
+  fetch("https://amsareescentre-backend.onrender.com/products")
+    .then(res => res.json())
+    .then(products => {
+      const product = products.find(p => p._id == id);
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let existing = cart.find(item => item._id == id);
+      if (existing) existing.qty += 1;
+      else cart.push({ ...product, qty: 1 });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    });
+}
+</script>
 </body>
 </html>
