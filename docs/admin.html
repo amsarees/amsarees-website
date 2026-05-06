@@ -19,7 +19,18 @@
       <input type="text" placeholder="Product Name" id="name">
       <input type="number" placeholder="Price" id="price">
       <input type="number" placeholder="Quantity" id="quantity">
-      <input type="file" id="image" accept="image/*"> <!-- gallery se photo select -->
+
+      <!-- Catalogue select -->
+      <select id="catalogue">
+        <option value="Cotton Sarees">Cotton Sarees</option>
+        <option value="Silk Sarees">Silk Sarees</option>
+        <option value="Fancy Sarees">Fancy Sarees</option>
+        <option value="Handloom Sarees">Handloom Sarees</option>
+        <option value="Daily Wear">Daily Wear</option>
+      </select>
+
+      <!-- Photo upload -->
+      <input type="file" id="image" accept="image/*">
       <button type="submit">Add Product</button>
     </form>
 
@@ -55,6 +66,7 @@
       formData.append("name", document.getElementById("name").value);
       formData.append("price", document.getElementById("price").value);
       formData.append("quantity", document.getElementById("quantity").value);
+      formData.append("catalogue", document.getElementById("catalogue").value);
       formData.append("image", document.getElementById("image").files[0]);
 
       const res = await fetch("https://amsareescentre-backend.onrender.com/add-product", {
@@ -63,7 +75,7 @@
       });
 
       const data = await res.json();
-      alert("Product added successfully!");
+      alert("Product added successfully in " + document.getElementById("catalogue").value + "!");
     });
 
     function saveAbout() {
