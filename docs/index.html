@@ -2,64 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>A.M. Sarees Centre</title>
+  <title>A.M. Sarees Centre – Elegance in Every Drape</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="A.M. Sarees Centre Logo">
-    <h1>A.M. Sarees Centre – Elegance in Every Drape</h1>
+    <h1>A.M. Sarees Centre</h1>
+    <p>Elegance in Every Drape</p>
     <nav>
       <a href="index.html">Home</a>
       <a href="collections.html">Collections</a>
-      <a href="new.html">New Arrivals</a>
       <a href="about.html">About Us</a>
       <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Login</a>
+      <a href="admin.html">Admin</a>
     </nav>
   </header>
 
-  <section class="banner">
+  <!-- Banner -->
+  <div class="banner">
     <h2>NEW COLLECTION – SAREES THAT DEFINE YOU</h2>
     <p>TRADITIONAL • ELEGANT • TIMELESS</p>
     <button>SHOP NOW</button>
-  </section>
+  </div>
 
-  <section class="highlights">
-    <div>QUALITY ASSURED – Best quality products</div>
-    <div>CUSTOMER SUPPORT – +91 9395142435</div>
-  </section>
-
+  <!-- Collections -->
   <section class="collections">
-    <h2>OUR COLLECTIONS</h2>
-    <div id="catalogue"></div>
+    <h3>Our Collections</h3>
+    <div class="product">
+      <img src="soft-silk.jpg" alt="Soft Silk Saree">
+      <h4>Soft Silk Saree</h4>
+      <p>₹1699</p>
+      <a href="https://wa.me/9395142435">ORDER ON WHATSAPP</a>
+    </div>
+    <div class="product">
+      <img src="cotton.jpg" alt="Cotton Saree">
+      <h4>Cotton Saree</h4>
+      <p>₹1499</p>
+      <a href="https://wa.me/9395142435">ORDER ON WHATSAPP</a>
+    </div>
   </section>
 
+  <!-- Footer -->
   <footer>
+    <p>QUALITY ASSURED – Best quality products</p>
+    <p>CUSTOMER SUPPORT – +91 9395142435</p>
     <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.G.)</p>
     <p>Phone: 9395142435, 9849258288</p>
   </footer>
-
-  <script>
-    fetch("https://amsareescentre-backend.onrender.com/products")
-      .then(res => res.json())
-      .then(data => {
-        data.forEach(product => {
-          const quantityText = product.quantity ? `<p>Quantity: ${product.quantity}</p>` : "";
-          document.querySelector("#catalogue").innerHTML += `
-            <div class="product">
-              <div class="new-tag">NEW</div>
-              <img src="${product.image}" alt="${product.name}">
-              <h3>${product.name}</h3>
-              <p>₹${product.price}</p>
-              ${quantityText}
-              <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
-                ORDER ON WHATSAPP
-              </a>
-            </div>
-          `;
-        });
-      });
-  </script>
 </body>
 </html>
