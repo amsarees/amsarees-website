@@ -6,7 +6,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header>
+    <img src="logo.png" alt="A.M. Sarees Centre Logo" style="height:60px;">
     <h1>A.M. Sarees Centre</h1>
     <p>Elegance in Every Drape</p>
     <nav>
@@ -18,22 +20,27 @@
     </nav>
   </header>
 
+  <!-- Banner -->
   <div class="banner">
+    <img src="banner.jpg" alt="New Collection Banner" style="width:100%; max-height:400px; object-fit:cover;">
     <h2>NEW COLLECTION – SAREES THAT DEFINE YOU</h2>
     <p>TRADITIONAL • ELEGANT • TIMELESS</p>
     <button>SHOP NOW</button>
   </div>
 
+  <!-- New Arrivals -->
   <section class="new-arrivals">
     <h3>New Arrivals</h3>
     <div id="newProducts"></div>
   </section>
 
+  <!-- All Products -->
   <section class="collections">
     <h3>All Products</h3>
     <div id="allProducts"></div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>QUALITY ASSURED – Best quality products</p>
     <p>CUSTOMER SUPPORT – +91 9395142435</p>
@@ -41,19 +48,22 @@
     <p>Phone: 9395142435, 9849258288 | Landline: 040-66178600</p>
   </footer>
 
+  <!-- Script -->
   <script>
     async function loadProducts() {
       const res = await fetch("https://amsareescentre-backend.onrender.com/products");
       const data = await res.json();
 
+      // Sort by latest
       data.sort((a, b) => b.createdAt - a.createdAt);
 
+      // New Arrivals
       const latest = data.slice(0, 5);
       document.getElementById("newProducts").innerHTML = "";
       latest.forEach(product => {
         document.getElementById("newProducts").innerHTML += `
           <div class="product">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}">
             <h4>${product.name}</h4>
             <p>₹${product.price}</p>
             <a href="https://wa.me/9395142435?text=Order ${product.name}">ORDER ON WHATSAPP</a>
@@ -61,11 +71,12 @@
         `;
       });
 
+      // All Products
       document.getElementById("allProducts").innerHTML = "";
       data.forEach(product => {
         document.getElementById("allProducts").innerHTML += `
           <div class="product">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}">
             <h4>${product.name}</h4>
             <p>₹${product.price}</p>
             <a href="https://wa.me/9395142435?text=Order ${product.name}">ORDER ON WHATSAPP</a>
