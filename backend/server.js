@@ -34,7 +34,7 @@ app.get("/products", (req, res) => {
   res.json(loadProducts());
 });
 
-// Add product
+// Add product (Admin Panel se)
 app.post("/products", upload.single("image"), (req, res) => {
   let products = loadProducts();
   const newProduct = {
@@ -46,7 +46,7 @@ app.post("/products", upload.single("image"), (req, res) => {
     createdAt: Date.now()
   };
   products.push(newProduct);
-  saveProducts(products);
+  saveProducts(products); // ✅ Permanent save
   res.json(newProduct);
 });
 
