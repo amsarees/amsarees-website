@@ -1,24 +1,39 @@
-<!-- contact.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Contact Us – A.M. Sarees Centre</title>
+  <title>Contact Us</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header> ...same nav... </header>
-  <section class="contact">
-    <h2>Contact Us</h2>
-    <div id="contactContent"></div>
-  </section>
-  <footer> ...same footer... </footer>
-  <script>
-    fetch("https://amsareescentre-backend.onrender.com/contact")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("contactContent").innerHTML = `<p>${data.contact || "No Contact info yet."}</p>`;
-      });
-  </script>
+<header>
+  <img src="images/logo.png" alt="Logo">
+  <h1>A.M. Sarees Centre</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
+
+<h2>Contact Us</h2>
+<div id="contact"></div>
+
+<script>
+fetch("https://amsareescentre-backend.onrender.com/contact")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("contact").innerHTML = `
+      <p>Address: ${data?.address || ""}</p>
+      <p>Phone: ${data?.phone || ""}</p>
+      <p>Email: ${data?.email || ""}</p>
+    `;
+  });
+</script>
+
+<footer>
+  <p>Customer Support: +91 9395142435</p>
+</footer>
 </body>
 </html>
