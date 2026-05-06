@@ -26,6 +26,18 @@
     <button>SHOP NOW</button>
   </div>
 
+  <!-- New Arrivals -->
+  <section class="new-arrivals">
+    <h3>New Arrivals</h3>
+    <div id="newProducts"></div>
+  </section>
+
+  <!-- Collections -->
+  <section class="collections">
+    <h3>All Products</h3>
+    <div id="allProducts"></div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <p>QUALITY ASSURED – Best quality products</p>
@@ -33,5 +45,43 @@
     <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.G.)</p>
     <p>Phone: 9395142435, 9849258288</p>
   </footer>
+
+  <script>
+    fetch("https://amsareescentre-backend.onrender.com/products")
+      .then(res => res.json())
+      .then(data => {
+        // Sort by latest
+        data.sort((a, b) => b.createdAt - a.createdAt);
+
+        // Latest 5 products in New Arrivals
+        const latest = data.slice(0, 5);
+        latest.forEach(product => {
+          document.getElementById("newProducts").innerHTML += `
+            <div class="product">
+              <img src="${product.image}" alt="${product.name}">
+              <h4>${product.name}</h4>
+              <p>₹${product.price}</p>
+              <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
+                ORDER ON WHATSAPP
+              </a>
+            </div>
+          `;
+        });
+
+        // All products in Collections
+        data.forEach(product => {
+          document.getElementById("allProducts").innerHTML += `
+            <div class="product">
+              <img src="${product.image}" alt="${product.name}">
+              <h4>${product.name}</h4>
+              <p>₹${product.price}</p>
+              <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
+                ORDER ON WHATSAPP
+              </a>
+            </div>
+          `;
+        });
+      });
+  </script>
 </body>
 </html>
