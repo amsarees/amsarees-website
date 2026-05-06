@@ -1,3 +1,4 @@
+<!-- contact.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,43 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>A.M. Sarees Centre</h1>
-    <p>Elegance in Every Drape</p>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="collections.html">Collections</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
-
-  <!-- Contact Us Content -->
+  <header> ...same nav... </header>
   <section class="contact">
     <h2>Contact Us</h2>
-    <p><strong>Owner:</strong> Mohd. Mohsin</p>
-    <p><strong>Address:</strong> S.no 21-1-579, Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad - 02 (T.S.)</p>
-    <p><strong>Mobile:</strong> +91 93951 42435, +91 98492 58288</p>
-    <p><strong>Landline:</strong> 040-66178600</p>
-    <p><strong>Email:</strong> amsareescentre@gmail.com</p>
-
-    <h3>Send us a message</h3>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
+    <div id="contactContent"></div>
   </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>QUALITY ASSURED – Best quality products</p>
-    <p>CUSTOMER SUPPORT – +91 9395142435</p>
-    <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.S.)</p>
-    <p>Phone: 9395142435, 9849258288 | Landline: 040-66178600</p>
-  </footer>
+  <footer> ...same footer... </footer>
+  <script>
+    fetch("https://amsareescentre-backend.onrender.com/contact")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("contactContent").innerHTML = `<p>${data.contact || "No Contact info yet."}</p>`;
+      });
+  </script>
 </body>
 </html>
