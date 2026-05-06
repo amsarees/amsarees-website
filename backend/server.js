@@ -16,11 +16,11 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Cloudinary config
+// ✅ Cloudinary config (tumhare keys)
 cloudinary.config({
-  cloud_name: "dqdfdfzqd",
-  api_key: "423525133597936",
-  api_secret: "pYU6ketec9OShBHqitU_LIGPFto"
+  cloud_name: "dqdfdfzqd",              // 👈 tumhara Cloud Name
+  api_key: "423525133597936",           // 👈 tumhara API Key
+  api_secret: "pYU6ketec9OShBHqitU_LIGPFto" // 👈 tumhara API Secret
 });
 
 // Products file
@@ -41,7 +41,7 @@ app.get("/products", (req, res) => {
 // Add product (upload to Cloudinary)
 app.post("/products", upload.single("image"), async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.file.path);
+    const result = await cloudinary.uploader.upload(req.file.path); // ✅ Upload to Cloudinary
     let products = loadProducts();
     const newProduct = {
       id: Date.now(),
@@ -49,13 +49,14 @@ app.post("/products", upload.single("image"), async (req, res) => {
       price: req.body.price,
       quantity: req.body.quantity,
       catalogue: req.body.catalogue,
-      image: result.secure_url, // ✅ permanent Cloudinary URL
+      image: result.secure_url, // ✅ Permanent Cloudinary URL
       createdAt: Date.now()
     };
     products.push(newProduct);
     saveProducts(products);
     res.json(newProduct);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Image upload failed" });
   }
 });
