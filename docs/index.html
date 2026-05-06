@@ -2,86 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>A.M. Sarees Centre – Elegance in Every Drape</title>
-  <link rel="stylesheet" href="style.css">
+  <title>A.M. Sarees Centre</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .product {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      display: inline-block;
+      width: 200px;
+      text-align: center;
+    }
+    .product img {
+      max-width: 150px;
+      height: auto;
+    }
+    .cart-btn {
+      background: gold;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <img src="logo.png" alt="A.M. Sarees Centre Logo" style="height:60px;">
-    <h1>A.M. Sarees Centre</h1>
-    <p>Elegance in Every Drape</p>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="collections.html">Collections</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+  <h1>Welcome to A.M. Sarees Centre</h1>
+  <div id="products"></div>
 
-  <!-- Banner (Only Image) -->
-  <div class="banner">
-    <img src="banner.jpg" alt="New Collection Banner" style="width:100%; max-height:400px; object-fit:cover;">
-  </div>
-
-  <!-- New Arrivals -->
-  <section class="new-arrivals">
-    <h3>New Arrivals</h3>
-    <div id="newProducts"></div>
-  </section>
-
-  <!-- All Products -->
-  <section class="collections">
-    <h3>All Products</h3>
-    <div id="allProducts"></div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>QUALITY ASSURED – Best quality products</p>
-    <p>CUSTOMER SUPPORT – +91 9395142435</p>
-    <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.S.)</p>
-    <p>Phone: 9395142435, 9849258288 | Landline: 040-66178600</p>
-  </footer>
-
-  <!-- Script -->
   <script>
-    async function loadProducts() {
-      const res = await fetch("https://amsareescentre-backend.onrender.com/products");
-      const data = await res.json();
-
-      // Sort by latest
-      data.sort((a, b) => b.createdAt - a.createdAt);
-
-      // New Arrivals
-      const latest = data.slice(0, 5);
-      document.getElementById("newProducts").innerHTML = "";
-      latest.forEach(product => {
-        document.getElementById("newProducts").innerHTML += `
-          <div class="product">
-            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}">
-            <h4>${product.name}</h4>
-            <p>₹${product.price}</p>
-            <a href="https://wa.me/9395142435?text=Order ${product.name}">ORDER ON WHATSAPP</a>
-          </div>
-        `;
-      });
-
-      // All Products
-      document.getElementById("allProducts").innerHTML = "";
-      data.forEach(product => {
-        document.getElementById("allProducts").innerHTML += `
-          <div class="product">
-            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}">
-            <h4>${product.name}</h4>
-            <p>₹${product.price}</p>
-            <a href="https://wa.me/9395142435?text=Order ${product.name}">ORDER ON WHATSAPP</a>
-          </div>
-        `;
-      });
+    // ✅ Load products from backend
+    function loadProducts() {
+      fetch("https://amsareescentre-backend.onrender.com/products")
+        .then(res => res.json())
+        .then(products => {
+          const container = document.getElementById("products");
+          container.innerHTML = "";
+          products.forEach(p => {
+            container.innerHTML += `
+              <div class="product">
+                <img src="${p.image}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>Price: ₹${p.price}</p>
+                <p>Quantity: ${p.quantity}</p>
+                <button class="cart-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+              </div>
+            `;
+          });
+        })
+        .catch(err => {
+          console.error("Error loading products:", err);
+        });
     }
 
+    // ✅ Add to Cart function
+    function addToCart(id) {
+      fetch("https://amsareescentre-backend.onrender.com/products")
+        .then(res => res.json())
+        .then(products => {
+          const product = products.find(p => p.id == id);
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          let existing = cart.find(item => item.id == id);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+              qty: 1
+            });
+          }
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert(product.name + " added to cart!");
+        });
+    }
+
+    // ✅ Load products when page opens
     loadProducts();
   </script>
 </body>
