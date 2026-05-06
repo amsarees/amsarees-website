@@ -16,9 +16,9 @@
   <div id="adminPanel" style="display:none;">
     <h3>Add Product</h3>
     <form id="addProductForm" enctype="multipart/form-data">
-      <input type="text" placeholder="Product Name" id="name">
-      <input type="number" placeholder="Price" id="price">
-      <input type="number" placeholder="Quantity" id="quantity">
+      <input type="text" placeholder="Product Name" id="name" required>
+      <input type="number" placeholder="Price" id="price" required>
+      <input type="number" placeholder="Quantity" id="quantity" required>
 
       <!-- Catalogue select -->
       <select id="catalogue">
@@ -30,7 +30,7 @@
       </select>
 
       <!-- Photo upload -->
-      <input type="file" id="image" accept="image/*">
+      <input type="file" id="image" accept="image/*" required>
       <button type="submit">Add Product</button>
     </form>
 
@@ -50,6 +50,7 @@
     const loginForm = document.getElementById("loginForm");
     const adminPanel = document.getElementById("adminPanel");
 
+    // Login
     loginForm.addEventListener("submit", function(e) {
       e.preventDefault();
       const user = document.getElementById("username").value;
@@ -74,7 +75,7 @@
       formData.append("catalogue", document.getElementById("catalogue").value);
       formData.append("image", document.getElementById("image").files[0]);
 
-      const res = await fetch("https://amsareescentre-backend.onrender.com/add-product", {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/products", {
         method: "POST",
         body: formData
       });
@@ -94,10 +95,12 @@
       data.forEach(product => {
         container.innerHTML += `
           <div class="product">
-            <img src="${product.image}" alt="${product.name}" style="max-width:100px;">
+            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}" style="max-width:100px;">
             <h4>${product.name}</h4>
             <p>₹${product.price}</p>
+            <p>Catalogue: ${product.catalogue}</p>
             <button onclick="deleteProduct(${product.id})">Delete</button>
+            <a href="product.html?id=${product.id}" target="_blank">View Page</a>
           </div>
         `;
       });
@@ -105,35 +108,33 @@
 
     // Delete Product
     async function deleteProduct(id) {
-      const res = await fetch("https://amsareescentre-backend.onrender.com/delete-product/" + id, {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/products/" + id, {
         method: "DELETE"
       });
       const data = await res.json();
-      alert(data.message);
+      alert("Product deleted!");
       loadProducts();
     }
 
     // Save About Us
     async function saveAbout() {
       const aboutText = document.getElementById("aboutText").value;
-      const res = await fetch("https://amsareescentre-backend.onrender.com/save-about", {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/about", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ about: aboutText })
       });
-      const data = await res.json();
       alert("About Us updated successfully!");
     }
 
     // Save Contact Us
     async function saveContact() {
       const contactText = document.getElementById("contactText").value;
-      const res = await fetch("https://amsareescentre-backend.onrender.com/save-contact", {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact: contactText })
       });
-      const data = await res.json();
       alert("Contact Us updated successfully!");
     }
   </script>
