@@ -1,86 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>A.M. Sarees Centre</title>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    .product {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px;
-      display: inline-block;
-      width: 200px;
-      text-align: center;
-    }
-    .product img {
-      max-width: 150px;
-      height: auto;
-    }
-    .cart-btn {
-      background: gold;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      margin-top: 5px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Welcome to A.M. Sarees Centre</h1>
-  <div id="products"></div>
+<header>
+  <h1>A.M. Sarees Centre</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
 
-  <script>
-    // ✅ Load products from backend
-    function loadProducts() {
-      fetch("https://amsareescentre-backend.onrender.com/products")
-        .then(res => res.json())
-        .then(products => {
-          const container = document.getElementById("products");
-          container.innerHTML = "";
-          products.forEach(p => {
-            container.innerHTML += `
-              <div class="product">
-                <img src="${p.image}" alt="${p.name}">
-                <h3>${p.name}</h3>
-                <p>Price: ₹${p.price}</p>
-                <p>Quantity: ${p.quantity}</p>
-                <button class="cart-btn" onclick="addToCart(${p.id})">Add to Cart</button>
-              </div>
-            `;
-          });
-        })
-        .catch(err => {
-          console.error("Error loading products:", err);
-        });
-    }
+<div class="banner">
+  <h2>NEW COLLECTION</h2>
+  <p>SAREES THAT DEFINE YOU</p>
+  <button onclick="location.href='collections.html'">SHOP NOW</button>
+</div>
 
-    // ✅ Add to Cart function
-    function addToCart(id) {
-      fetch("https://amsareescentre-backend.onrender.com/products")
-        .then(res => res.json())
-        .then(products => {
-          const product = products.find(p => p.id == id);
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          let existing = cart.find(item => item.id == id);
-          if (existing) {
-            existing.qty += 1;
-          } else {
-            cart.push({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-              qty: 1
-            });
-          }
-          localStorage.setItem("cart", JSON.stringify(cart));
-          alert(product.name + " added to cart!");
-        });
-    }
+<h2>New Arrivals</h2>
+<div id="newArrivals"></div>
 
-    // ✅ Load products when page opens
-    loadProducts();
-  </script>
-</body>
-</html>
+<script>
+fetch("https://amsareescentre-backend.onrender.com/products")
+  .then(res => res.json())
+  .then(products => {
+    const container = document.getElementById("newArrivals");
+    products.slice(0,5).forEach(p => {
+      container.innerHTML += `
+        <div>
+          <img src="${p.image}" style="max-width:150px;">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <button onclick="addToCart(${p._id})">Add to Cart</button>
+        </div>
+      `;
+    });
+  });
+
+function addToCart(id) {
+  fetch("https://amsareescentre-backend.onrender.com/products")
+    .then(res => res.json())
+    .then(products => {
+      const product = products.find(p => p._id == id);
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let existing = cart.find(item => item._id == id);
+      if (existing) existing.qty += 1;
+      else cart.push({ ...product, qty: 1 });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    });
+}
+</script>
