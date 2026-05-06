@@ -1,142 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Panel – A.M. Sarees Centre</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h2>Admin Login</h2>
-  <form id="loginForm">
-    <input type="text" placeholder="Username" id="username">
-    <input type="password" placeholder="Password" id="password">
-    <button type="submit">Login</button>
-  </form>
+<h1>Admin Panel</h1>
+<form id="productForm" enctype="multipart/form-data">
+  <input type="text" name="name" placeholder="Product Name" required><br>
+  <input type="number" name="price" placeholder="Price" required><br>
+  <input type="number" name="quantity" placeholder="Quantity" required><br>
+  <input type="text" name="catalogue" placeholder="Catalogue" required><br>
+  <input type="file" name="image" required><br>
+  <button type="submit">Save Product</button>
+</form>
 
-  <div id="adminPanel" style="display:none;">
-    <h3>Add Product</h3>
-    <form id="addProductForm" enctype="multipart/form-data">
-      <input type="text" placeholder="Product Name" id="name" required>
-      <input type="number" placeholder="Price" id="price" required>
-      <input type="number" placeholder="Quantity" id="quantity" required>
+<h2>Edit About Us</h2>
+<textarea id="aboutText"></textarea><br>
+<button onclick="saveAbout()">Save About Us</button>
 
-      <!-- Catalogue select -->
-      <select id="catalogue">
-        <option value="Cotton Sarees">Cotton Sarees</option>
-        <option value="Silk Sarees">Silk Sarees</option>
-        <option value="Fancy Sarees">Fancy Sarees</option>
-        <option value="Handloom Sarees">Handloom Sarees</option>
-        <option value="Daily Wear">Daily Wear</option>
-      </select>
+<h2>Edit Contact Us</h2>
+<input type="text" id="address" placeholder="Address"><br>
+<input type="text" id="phone" placeholder="Phone"><br>
+<input type="email" id="email" placeholder="Email"><br>
+<button onclick="saveContact()">Save Contact Us</button>
 
-      <!-- Photo upload -->
-      <input type="file" id="image" accept="image/*" required>
-      <button type="submit">Add Product</button>
-    </form>
+<script>
+document.getElementById("productForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  await fetch("https://amsareescentre-backend.onrender.com/products", {
+    method: "POST",
+    body: formData
+  });
+  alert("Product saved!");
+});
 
-    <h3>All Products</h3>
-    <div id="productList"></div>
+function saveAbout() {
+  const text = document.getElementById("aboutText").value;
+  fetch("https://amsareescentre-backend.onrender.com/about", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ about: text })
+  });
+  alert("About Us updated!");
+}
 
-    <h3>About Us</h3>
-    <textarea id="aboutText" placeholder="Write about your shop..."></textarea>
-    <button onclick="saveAbout()">Save About Us</button>
-
-    <h3>Contact Us</h3>
-    <textarea id="contactText" placeholder="Write contact details..."></textarea>
-    <button onclick="saveContact()">Save Contact Us</button>
-  </div>
-
-  <script>
-    const loginForm = document.getElementById("loginForm");
-    const adminPanel = document.getElementById("adminPanel");
-
-    // Login
-    loginForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-      if(user === "amsareescentre" && pass === "amsarees786@") {
-        loginForm.style.display = "none";
-        adminPanel.style.display = "block";
-        loadProducts();
-      } else {
-        alert("Invalid credentials!");
-      }
-    });
-
-    // Add Product
-    document.getElementById("addProductForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-
-      const formData = new FormData();
-      formData.append("name", document.getElementById("name").value);
-      formData.append("price", document.getElementById("price").value);
-      formData.append("quantity", document.getElementById("quantity").value);
-      formData.append("catalogue", document.getElementById("catalogue").value);
-      formData.append("image", document.getElementById("image").files[0]);
-
-      const res = await fetch("https://amsareescentre-backend.onrender.com/products", {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await res.json();
-      alert("Product added successfully!");
-      loadProducts();
-    });
-
-    // Load Products
-    async function loadProducts() {
-      const res = await fetch("https://amsareescentre-backend.onrender.com/products");
-      const data = await res.json();
-      const container = document.getElementById("productList");
-      container.innerHTML = "";
-
-      data.forEach(product => {
-        container.innerHTML += `
-          <div class="product">
-            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}" style="max-width:100px;">
-            <h4>${product.name}</h4>
-            <p>₹${product.price}</p>
-            <p>Catalogue: ${product.catalogue}</p>
-            <button onclick="deleteProduct(${product.id})">Delete</button>
-            <a href="product.html?id=${product.id}" target="_blank">View Page</a>
-          </div>
-        `;
-      });
-    }
-
-    // Delete Product
-    async function deleteProduct(id) {
-      const res = await fetch("https://amsareescentre-backend.onrender.com/products/" + id, {
-        method: "DELETE"
-      });
-      const data = await res.json();
-      alert("Product deleted!");
-      loadProducts();
-    }
-
-    // Save About Us
-    async function saveAbout() {
-      const aboutText = document.getElementById("aboutText").value;
-      const res = await fetch("https://amsareescentre-backend.onrender.com/about", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ about: aboutText })
-      });
-      alert("About Us updated successfully!");
-    }
-
-    // Save Contact Us
-    async function saveContact() {
-      const contactText = document.getElementById("contactText").value;
-      const res = await fetch("https://amsareescentre-backend.onrender.com/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contact: contactText })
-      });
-      alert("Contact Us updated successfully!");
-    }
-  </script>
-</body>
-</html>
+function saveContact() {
+  const address = document.getElementById("address").value;
+  const phone = document.getElementById("phone").value;
+  const email = document.getElementById("email").value;
+  fetch("https://amsareescentre-backend.onrender.com/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ address, phone, email })
+  });
+  alert("Contact Us updated!");
+}
+</script>
