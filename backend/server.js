@@ -9,19 +9,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Cloudinary config (tumhare keys)
+// ✅ Cloudinary config
 cloudinary.config({
   cloud_name: "dqdfdfzqd",
   api_key: "423525133597936",
   api_secret: "pYU6ketec9OShBHqitU_LIGPFto"
 });
 
-// ✅ MongoDB connect (Atlas string .env me dalna)
+// ✅ MongoDB connect
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error("MongoDB error:", err));
 
-// ✅ Product schema
+// ✅ Schemas
 const ProductSchema = new mongoose.Schema({
   name: String,
   price: Number,
@@ -32,7 +32,6 @@ const ProductSchema = new mongoose.Schema({
 });
 const Product = mongoose.model("Product", ProductSchema);
 
-// ✅ About & Contact schema
 const AboutSchema = new mongoose.Schema({ text: String });
 const ContactSchema = new mongoose.Schema({ address: String, phone: String, email: String });
 const About = mongoose.model("About", AboutSchema);
@@ -45,13 +44,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ✅ Get all products
+// ✅ Routes
 app.get("/products", async (req, res) => {
   const products = await Product.find().sort({ createdAt: -1 });
   res.json(products);
 });
 
-// ✅ Add product (Cloudinary upload)
 app.post("/products", upload.single("image"), async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path);
@@ -65,22 +63,16 @@ app.post("/products", upload.single("image"), async (req, res) => {
     await newProduct.save();
     res.json(newProduct);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Image upload failed" });
   }
 });
 
-// ✅ Delete product
 app.delete("/products/:id", async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
   res.json({ success: true });
 });
 
-// ✅ About Us
-app.get("/about", async (req, res) => {
-  const about = await About.findOne();
-  res.json(about);
-});
+app.get("/about", async (req, res) => res.json(await About.findOne()));
 app.post("/about", async (req, res) => {
   await About.deleteMany({});
   const about = new About({ text: req.body.about });
@@ -88,11 +80,7 @@ app.post("/about", async (req, res) => {
   res.json(about);
 });
 
-// ✅ Contact Us
-app.get("/contact", async (req, res) => {
-  const contact = await Contact.findOne();
-  res.json(contact);
-});
+app.get("/contact", async (req, res) => res.json(await Contact.findOne()));
 app.post("/contact", async (req, res) => {
   await Contact.deleteMany({});
   const contact = new Contact(req.body);
