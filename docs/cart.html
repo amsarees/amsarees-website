@@ -2,49 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cart – A.M. Sarees Centre</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Cart - A.M. Sarees Centre</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .cart-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .cart-item img {
+      max-width: 100px;
+      margin-right: 10px;
+    }
+    .order-btn {
+      background: green;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Your Cart</h2>
-  <div id="cartItems"></div>
-  <a id="whatsappOrder" target="_blank">Place Order on WhatsApp</a>
+  <h1>Your Cart</h1>
+  <div id="cart"></div>
+  <button class="order-btn" onclick="placeOrder()">Place WhatsApp Order</button>
 
   <script>
     function loadCart() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let message = "Order Details:\n";
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const container = document.getElementById("cart");
+      container.innerHTML = "";
+
       cart.forEach(item => {
-        message += `${item.name} x ${item.qty} = ₹${item.price * item.qty}\n`;
+        container.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div>
+              <h4>${item.name}</h4>
+              <p>Price: ₹${item.price}</p>
+              <p>Quantity: ${item.qty}</p>
+            </div>
+          </div>
+        `;
       });
-      document.getElementById("cartItems").innerHTML = cart.map(item => `
-        <div>
-          ${item.name} – Qty: ${item.qty}
-          <button onclick="increaseQty(${item.id})">+</button>
-          <button onclick="decreaseQty(${item.id})">-</button>
-        </div>
-      `).join("");
-      document.getElementById("whatsappOrder").href =
-        "https://wa.me/9395142435?text=" + encodeURIComponent(message);
     }
 
-    function increaseQty(id) {
+    function placeOrder() {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let item = cart.find(i => i.id == id);
-      if (item) item.qty += 1;
-      localStorage.setItem("cart", JSON.stringify(cart));
-      loadCart();
-    }
-
-    function decreaseQty(id) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let item = cart.find(i => i.id == id);
-      if (item) {
-        item.qty -= 1;
-        if (item.qty <= 0) cart = cart.filter(i => i.id != id);
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-      loadCart();
+      let message = "Order Details:%0A";
+      cart.forEach(item => {
+        message += `${item.name} - Qty: ${item.qty} - Price: ₹${item.price}%0A`;
+      });
+      // ✅ Replace with your WhatsApp number
+      window.open(`https://wa.me/919395142435?text=${message}`, "_blank");
     }
 
     loadCart();
