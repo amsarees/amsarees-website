@@ -6,37 +6,87 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="Logo">
+    <img src="logo.png" alt="Logo" style="height:60px;">
     <h1>A.M. Sarees Centre – Elegance in Every Drape</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="collections.html">Collections</a>
-      <a href="new.html">New Arrivals</a>
       <a href="about.html">About Us</a>
       <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Login</a>
+      <a href="admin.html">Admin</a>
     </nav>
   </header>
 
-  <h2>Our Saree Collections</h2>
-  <div id="catalogue"></div>
+  <!-- Catalogue Filter -->
+  <section class="catalogue-filter">
+    <h2>Browse by Catalogue</h2>
+    <select id="catalogueSelect">
+      <option value="All">All Products</option>
+      <option value="Cotton Sarees">Cotton Sarees</option>
+      <option value="Silk Sarees">Silk Sarees</option>
+      <option value="Fancy Sarees">Fancy Sarees</option>
+      <option value="Handloom Sarees">Handloom Sarees</option>
+      <option value="Daily Wear">Daily Wear</option>
+    </select>
+  </section>
+
+  <!-- Products -->
+  <section class="collections">
+    <div id="catalogueProducts"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>QUALITY ASSURED – Best quality products</p>
+    <p>CUSTOMER SUPPORT – +91 9395142435</p>
+    <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.G.)</p>
+    <p>Phone: 9395142435, 9849258288</p>
+  </footer>
 
   <script>
+    let allProducts = [];
+
+    // Fetch products from backend
     fetch("https://amsareescentre-backend.onrender.com/products")
       .then(res => res.json())
       .then(data => {
-        data.forEach(product => {
-          document.querySelector("#catalogue").innerHTML += `
-            <div class="product">
-              <img src="${product.image}" alt="${product.name}">
-              <h3>${product.name}</h3>
-              <p>₹${product.price}</p>
-              <a href="https://wa.me/9395142435?text=Order ${product.name}">Order on WhatsApp</a>
-            </div>
-          `;
-        });
+        allProducts = data;
+        showProducts("All");
       });
+
+    // Show products based on catalogue
+    function showProducts(catalogue) {
+      const container = document.getElementById("catalogueProducts");
+      container.innerHTML = "";
+
+      let filtered = catalogue === "All" ? allProducts : allProducts.filter(p => p.catalogue === catalogue);
+
+      if(filtered.length === 0) {
+        container.innerHTML = "<p>No products found in this catalogue.</p>";
+        return;
+      }
+
+      filtered.forEach(product => {
+        container.innerHTML += `
+          <div class="product">
+            <img src="${product.image}" alt="${product.name}">
+            <h4>${product.name}</h4>
+            <p>₹${product.price}</p>
+            ${product.quantity ? `<p>Quantity: ${product.quantity}</p>` : ""}
+            <a href="https://wa.me/9395142435?text=Hi,%20I'd%20like%20to%20order%20${product.name}">
+              ORDER ON WHATSAPP
+            </a>
+          </div>
+        `;
+      });
+    }
+
+    // Event listener for catalogue select
+    document.getElementById("catalogueSelect").addEventListener("change", function() {
+      showProducts(this.value);
+    });
   </script>
 </body>
 </html>
