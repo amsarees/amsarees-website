@@ -14,7 +14,7 @@
   </form>
 
   <div id="adminPanel" style="display:none;">
-    <h3>Manage Products</h3>
+    <h3>Add Product</h3>
     <form id="addProductForm" enctype="multipart/form-data">
       <input type="text" placeholder="Product Name" id="name">
       <input type="number" placeholder="Price" id="price">
@@ -33,6 +33,9 @@
       <input type="file" id="image" accept="image/*">
       <button type="submit">Add Product</button>
     </form>
+
+    <h3>All Products</h3>
+    <div id="productList"></div>
 
     <h3>About Us</h3>
     <textarea id="aboutText" placeholder="Write about your shop..."></textarea>
@@ -54,6 +57,7 @@
       if(user === "amsareescentre" && pass === "amsarees786@") {
         loginForm.style.display = "none";
         adminPanel.style.display = "block";
+        loadProducts();
       } else {
         alert("Invalid credentials!");
       }
@@ -76,8 +80,38 @@
       });
 
       const data = await res.json();
-      alert("Product added successfully in " + document.getElementById("catalogue").value + "!");
+      alert("Product added successfully!");
+      loadProducts();
     });
+
+    // Load Products
+    async function loadProducts() {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/products");
+      const data = await res.json();
+      const container = document.getElementById("productList");
+      container.innerHTML = "";
+
+      data.forEach(product => {
+        container.innerHTML += `
+          <div class="product">
+            <img src="${product.image}" alt="${product.name}" style="max-width:100px;">
+            <h4>${product.name}</h4>
+            <p>₹${product.price}</p>
+            <button onclick="deleteProduct(${product.id})">Delete</button>
+          </div>
+        `;
+      });
+    }
+
+    // Delete Product
+    async function deleteProduct(id) {
+      const res = await fetch("https://amsareescentre-backend.onrender.com/delete-product/" + id, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+      alert(data.message);
+      loadProducts();
+    }
 
     // Save About Us
     async function saveAbout() {
