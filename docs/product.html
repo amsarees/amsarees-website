@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Detail – A.M. Sarees Centre</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="productDetail"></div>
+  <a href="cart.html">Go to Cart</a>
+
+  <script>
+    async function loadProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const res = await fetch("https://amsareescentre-backend.onrender.com/products");
+      const products = await res.json();
+      const product = products.find(p => p.id == id);
+
+      document.getElementById("productDetail").innerHTML = `
+        <img src="https://amsareescentre-backend.onrender.com${product.image}" 
+             style="width:300px;cursor:zoom-in;" 
+             onclick="this.style.width=this.style.width==='300px'?'600px':'300px'">
+        <h2>${product.name}</h2>
+        <p>₹${product.price}</p>
+        <p>Available: ${product.quantity}</p>
+        <p>Catalogue: ${product.catalogue}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+    }
+
+    function addToCart(id) {
+      fetch("https://amsareescentre-backend.onrender.com/products")
+        .then(res => res.json())
+        .then(products => {
+          const product = products.find(p => p.id == id);
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          let existing = cart.find(item => item.id == id);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+          }
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert("Added to cart!");
+        });
+    }
+
+    loadProduct();
+  </script>
+</body>
+</html>
