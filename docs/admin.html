@@ -59,6 +59,7 @@
       }
     });
 
+    // Add Product
     document.getElementById("addProductForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
@@ -78,11 +79,28 @@
       alert("Product added successfully in " + document.getElementById("catalogue").value + "!");
     });
 
-    function saveAbout() {
-      alert("About Us saved: " + document.getElementById("aboutText").value);
+    // Save About Us
+    async function saveAbout() {
+      const aboutText = document.getElementById("aboutText").value;
+      const res = await fetch("https://amsareescentre-backend.onrender.com/save-about", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ about: aboutText })
+      });
+      const data = await res.json();
+      alert("About Us updated successfully!");
     }
-    function saveContact() {
-      alert("Contact Us saved: " + document.getElementById("contactText").value);
+
+    // Save Contact Us
+    async function saveContact() {
+      const contactText = document.getElementById("contactText").value;
+      const res = await fetch("https://amsareescentre-backend.onrender.com/save-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: contactText })
+      });
+      const data = await res.json();
+      alert("Contact Us updated successfully!");
     }
   </script>
 </body>
