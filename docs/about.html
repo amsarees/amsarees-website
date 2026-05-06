@@ -1,24 +1,35 @@
-<!-- about.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>About Us – A.M. Sarees Centre</title>
+  <title>About Us</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header> ...same nav... </header>
-  <section class="about">
-    <h2>About Us</h2>
-    <div id="aboutContent"></div>
-  </section>
-  <footer> ...same footer... </footer>
-  <script>
-    fetch("https://amsareescentre-backend.onrender.com/about")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("aboutContent").innerHTML = `<p>${data.about || "No About Us info yet."}</p>`;
-      });
-  </script>
+<header>
+  <img src="images/logo.png" alt="Logo">
+  <h1>A.M. Sarees Centre</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
+
+<h2>About Us</h2>
+<div id="about"></div>
+
+<script>
+fetch("https://amsareescentre-backend.onrender.com/about")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("about").innerText = data?.text || "About Us not set yet.";
+  });
+</script>
+
+<footer>
+  <p>Elegance in Every Drape</p>
+</footer>
 </body>
 </html>
