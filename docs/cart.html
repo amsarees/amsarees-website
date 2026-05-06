@@ -1,53 +1,31 @@
-<h1>Admin Panel</h1>
-<form id="productForm" enctype="multipart/form-data">
-  <input type="text" name="name" placeholder="Product Name" required><br>
-  <input type="number" name="price" placeholder="Price" required><br>
-  <input type="number" name="quantity" placeholder="Quantity" required><br>
-  <input type="text" name="catalogue" placeholder="Catalogue" required><br>
-  <input type="file" name="image" required><br>
-  <button type="submit">Save Product</button>
-</form>
-
-<h2>Edit About Us</h2>
-<textarea id="aboutText"></textarea><br>
-<button onclick="saveAbout()">Save About Us</button>
-
-<h2>Edit Contact Us</h2>
-<input type="text" id="address" placeholder="Address"><br>
-<input type="text" id="phone" placeholder="Phone"><br>
-<input type="email" id="email" placeholder="Email"><br>
-<button onclick="saveContact()">Save Contact Us</button>
+<div id="cart"></div>
+<button onclick="placeOrder()">Place WhatsApp Order</button>
 
 <script>
-document.getElementById("productForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const formData = new FormData(this);
-  await fetch("https://amsareescentre-backend.onrender.com/products", {
-    method: "POST",
-    body: formData
+function loadCart() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const container = document.getElementById("cart");
+  container.innerHTML = "";
+  cart.forEach(item => {
+    container.innerHTML += `
+      <div>
+        <img src="${item.image}" style="max-width:100px;">
+        <h4>${item.name}</h4>
+        <p>Price: ₹${item.price}</p>
+        <p>Quantity: ${item.qty}</p>
+      </div>
+    `;
   });
-  alert("Product saved!");
-});
-
-function saveAbout() {
-  const text = document.getElementById("aboutText").value;
-  fetch("https://amsareescentre-backend.onrender.com/about", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ about: text })
-  });
-  alert("About Us updated!");
 }
 
-function saveContact() {
-  const address = document.getElementById("address").value;
-  const phone = document.getElementById("phone").value;
-  const email = document.getElementById("email").value;
-  fetch("https://amsareescentre-backend.onrender.com/contact", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ address, phone, email })
+function placeOrder() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let message = "Order Details:%0A";
+  cart.forEach(item => {
+    message += `Name: ${item.name}%0AQty: ${item.qty}%0APrice: ₹${item.price}%0AImage: ${item.image}%0A%0A`;
   });
-  alert("Contact Us updated!");
+  window.open(`https://wa.me/919395142435?text=${message}`, "_blank");
 }
+
+loadCart();
 </script>
