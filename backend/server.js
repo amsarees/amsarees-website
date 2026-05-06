@@ -15,12 +15,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Load products.json
+// File path
 const productsFile = path.join(__dirname, "products.json");
+
+// Load products
 function loadProducts() {
   if (!fs.existsSync(productsFile)) return [];
   return JSON.parse(fs.readFileSync(productsFile));
 }
+
+// Save products
 function saveProducts(products) {
   fs.writeFileSync(productsFile, JSON.stringify(products, null, 2));
 }
@@ -52,26 +56,6 @@ app.delete("/products/:id", (req, res) => {
   products = products.filter(p => p.id != req.params.id);
   saveProducts(products);
   res.json({ success: true });
-});
-
-// About Us
-app.post("/about", (req, res) => {
-  fs.writeFileSync(path.join(__dirname, "about.json"), JSON.stringify(req.body));
-  res.json({ success: true });
-});
-app.get("/about", (req, res) => {
-  if (!fs.existsSync(path.join(__dirname, "about.json"))) return res.json({});
-  res.json(JSON.parse(fs.readFileSync(path.join(__dirname, "about.json")));
-});
-
-// Contact Us
-app.post("/contact", (req, res) => {
-  fs.writeFileSync(path.join(__dirname, "contact.json"), JSON.stringify(req.body));
-  res.json({ success: true });
-});
-app.get("/contact", (req, res) => {
-  if (!fs.existsSync(path.join(__dirname, "contact.json"))) return res.json({});
-  res.json(JSON.parse(fs.readFileSync(path.join(__dirname, "contact.json")));
 });
 
 const PORT = process.env.PORT || 10000;
