@@ -1,31 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header> ...same nav... </header>
+<h2>Your Cart</h2>
 <div id="cart"></div>
 <button onclick="placeOrder()">Place WhatsApp Order</button>
 
 <script>
 function loadCart() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const container = document.getElementById("cart");
-  container.innerHTML = "";
-  cart.forEach(item => {
-    container.innerHTML += `
-      <div>
-        <img src="${item.image}" style="max-width:100px;">
-        <h4>${item.name}</h4>
-        <p>Price: ₹${item.price}</p>
-        <p>Quantity: ${item.qty}</p>
-      </div>
-    `;
-  });
-}
-
-function placeOrder() {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let message = "Order Details:%0A";
-  cart.forEach(item => {
-    message += `Name: ${item.name}%0AQty: ${item.qty}%0APrice: ₹${item.price}%0AImage: ${item.image}%0A%0A`;
-  });
-  window.open(`https://wa.me/919395142435?text=${message}`, "_blank");
-}
-
-loadCart();
-</script>
+  const container =
