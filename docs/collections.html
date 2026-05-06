@@ -7,77 +7,60 @@
 </head>
 <body>
   <header>
-    <h1>A.M. Sarees Centre</h1>
-    <p>Elegance in Every Drape</p>
+    <h1>Our Collections</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="collections.html">Collections</a>
       <a href="about.html">About Us</a>
       <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Admin</a>
+      <a href="cart.html">Cart</a>
     </nav>
   </header>
 
-  <section class="catalogue-filter">
-    <h2>Browse by Catalogue</h2>
-    <select id="catalogueSelect">
-      <option value="All">All Products</option>
-      <option value="Cotton Sarees">Cotton Sarees</option>
-      <option value="Silk Sarees">Silk Sarees</option>
-      <option value="Fancy Sarees">Fancy Sarees</option>
-      <option value="Handloom Sarees">Handloom Sarees</option>
-      <option value="Daily Wear">Daily Wear</option>
-    </select>
+  <section>
+    <h2>All Products</h2>
+    <div id="collections"></div>
   </section>
-
-  <section class="collections">
-    <div id="catalogueProducts"></div>
-  </section>
-
-  <footer>
-    <p>QUALITY ASSURED – Best quality products</p>
-    <p>CUSTOMER SUPPORT – +91 9395142435</p>
-    <p>S.no 21-1-579 Near 94 Bus Stop, High Court Road, Rikab Gunj, Hyderabad -02 (T.S.)</p>
-    <p>Phone: 9395142435, 9849258288 | Landline: 040-66178600</p>
-  </footer>
 
   <script>
-    let allProducts = [];
-
-    async function loadProducts() {
+    async function loadCollections() {
       const res = await fetch("https://amsareescentre-backend.onrender.com/products");
-      allProducts = await res.json();
-      showProducts("All");
-    }
-
-    function showProducts(catalogue) {
-      const container = document.getElementById("catalogueProducts");
+      const data = await res.json();
+      const container = document.getElementById("collections");
       container.innerHTML = "";
 
-      let filtered = catalogue === "All" ? allProducts : allProducts.filter(p => p.catalogue === catalogue);
-
-      if(filtered.length === 0) {
-        container.innerHTML = "<p>No products found in this catalogue.</p>";
-        return;
-      }
-
-      filtered.forEach(product => {
+      data.forEach(product => {
         container.innerHTML += `
           <div class="product">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="https://amsareescentre-backend.onrender.com${product.image}" alt="${product.name}" style="max-width:150px;">
             <h4>${product.name}</h4>
             <p>₹${product.price}</p>
-            <a href="https://wa.me/9395142435?text=Order ${product.name}">ORDER ON WHATSAPP</a>
+            <p>Catalogue: ${product.catalogue}</p>
+            <a href="product.html?id=${product.id}">View Details</a>
+            <button onclick="addToCart(${product.id})">Add to Cart</button>
           </div>
         `;
       });
     }
 
-    document.getElementById("catalogueSelect").addEventListener("change", function() {
-      showProducts(this.value);
-    });
+    function addToCart(id) {
+      fetch("https://amsareescentre-backend.onrender.com/products")
+        .then(res => res.json())
+        .then(products => {
+          const product = products.find(p => p.id == id);
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          let existing = cart.find(item => item.id == id);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+          }
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert("Added to cart!");
+        });
+    }
 
-    loadProducts();
+    loadCollections();
   </script>
 </body>
 </html>
