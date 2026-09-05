@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Admin | A M Sarees Centre</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <style>
+
+    .admin-container {
+      width: 92%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 70px 0;
+    }
+
+    .admin-title {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .admin-title h1 {
+      font-size: 42px;
+      font-weight: normal;
+      color: #f5f1e8;
+    }
+
+    .admin-box {
+      max-width: 500px;
+      margin: auto;
+      padding: 35px;
+      background: #101010;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .admin-box h2 {
+      color: #d4af37;
+      font-weight: normal;
+      margin-bottom: 25px;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      background: #080808;
+      border: 1px solid #444;
+      color: white;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .admin-input:focus {
+      border-color: #d4af37;
+    }
+
+    .admin-label {
+      display: block;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .admin-message {
+      margin-top: 15px;
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    #adminPanel {
+      display: none;
+    }
+
+    .upload-box {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      padding: 35px;
+      background: #101010;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .upload-box h2 {
+      color: #d4af37;
+      font-weight: normal;
+      margin-bottom: 25px;
+    }
+
+    .file-input {
+      width: 100%;
+      padding: 12px;
+      background: #080808;
+      border: 1px solid #444;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    .admin-products-title {
+      text-align: center;
+      color: #d4af37;
+      font-size: 28px;
+      font-weight: normal;
+      margin-bottom: 30px;
+    }
+
+    .logout-button {
+      max-width: 200px;
+      margin: 25px auto 0;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="logo">
+
+      A M
+
+      <span>
+        SAREES CENTRE
+      </span>
+
+    </div>
+
+
+    <nav>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="products.html">
+        Shop
+      </a>
+
+      <a href="admin.html">
+        Admin
+      </a>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- ADMIN LOGIN -->
+
+  <main class="admin-container">
+
+
+    <div
+      id="loginSection"
+      class="admin-box"
+    >
+
+      <h2>
+        Admin Login
+      </h2>
+
+
+      <label class="admin-label">
+        Username
+      </label>
+
+      <input
+        type="text"
+        id="username"
+        class="admin-input"
+        placeholder="Enter username"
+      >
+
+
+      <label class="admin-label">
+        Password
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        class="admin-input"
+        placeholder="Enter password"
+      >
+
+
+      <button
+        class="btn"
+        onclick="login()"
+      >
+        LOGIN
+      </button>
+
+
+      <div
+        id="loginMessage"
+        class="admin-message"
+      ></div>
+
+    </div>
+
+
+
+    <!-- ADMIN PANEL -->
+
+    <div id="adminPanel">
+
+
+      <div class="admin-title">
+
+        <p class="section-small">
+          A M SAREES CENTRE
+        </p>
+
+        <h1>
+          Admin Dashboard
+        </h1>
+
+      </div>
+
+
+
+      <!-- UPLOAD -->
+
+      <div class="upload-box">
+
+        <h2>
+          Add New Saree
+        </h2>
+
+
+        <label class="admin-label">
+          Product Image
+        </label>
+
+        <input
+          type="file"
+          id="image"
+          class="file-input"
+          accept="image/*"
+        >
+
+
+        <label class="admin-label">
+          Product Name
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          class="admin-input"
+          placeholder="Example: Pure Cotton Saree"
+        >
+
+
+        <label class="admin-label">
+          Price
+        </label>
+
+        <input
+          type="number"
+          id="price"
+          class="admin-input"
+          placeholder="Example: 1299"
+          min="0"
+        >
+
+
+        <label class="admin-label">
+          Quantity
+        </label>
+
+        <input
+          type="number"
+          id="quantity"
+          class="admin-input"
+          placeholder="Example: 10"
+          min="1"
+        >
+
+
+        <label class="admin-label">
+          Category
+        </label>
+
+        <input
+          type="text"
+          id="category"
+          class="admin-input"
+          placeholder="Example: Cotton"
+        >
+
+
+        <button
+          class="btn"
+          onclick="addProduct()"
+        >
+          UPLOAD PRODUCT
+        </button>
+
+
+        <div
+          id="uploadMessage"
+          class="admin-message"
+        ></div>
+
+      </div>
+
+
+
+      <!-- PRODUCTS -->
+
+      <h2 class="admin-products-title">
+        Manage Products
+      </h2>
+
+
+      <div
+        id="adminProducts"
+        class="product-grid"
+      >
+
+        <p style="
+          color:#aaa;
+          text-align:center;
+          grid-column:1/-1;
+        ">
+          Loading products...
+        </p>
+
+      </div>
+
+
+      <!-- LOGOUT -->
+
+      <button
+        class="btn logout-button"
+        onclick="logout()"
+      >
+        LOGOUT
+      </button>
+
+
+    </div>
+
+  </main>
+
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-logo">
+      A M SAREES CENTRE
+    </div>
+
+    <p>
+      Premium Sarees • Wholesale Collection
+    </p>
+
+    <p>
+      Hyderabad, Telangana
+    </p>
+
+    <p>
+      WhatsApp: 9395142435
+    </p>
+
+    <p class="copyright">
+      © 2026 A M Sarees Centre. All Rights Reserved.
+    </p>
+
+  </footer>
+
+
+
+  <script src="admin.js"></script>
+
+</body>
+
+</html>
