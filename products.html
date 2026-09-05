@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Shop | A M Sarees Centre</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="logo">
+      A M
+      <span>SAREES CENTRE</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Shop</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+
+  </header>
+
+
+  <!-- SHOP -->
+  <main>
+
+    <section class="collection">
+
+      <p class="section-small">A M SAREES CENTRE</p>
+
+      <h2>Our Collection</h2>
+
+
+      <!-- SEARCH -->
+      <div style="max-width:500px;margin:0 auto 30px;">
+
+        <input
+          type="text"
+          id="search"
+          placeholder="Search sarees..."
+          oninput="searchProducts()"
+          style="
+            width:100%;
+            padding:15px;
+            background:#101010;
+            border:1px solid #d4af37;
+            color:white;
+            font-family:inherit;
+            outline:none;
+          "
+        >
+
+      </div>
+
+
+      <!-- CATEGORY BUTTONS -->
+      <div
+        id="categories"
+        style="
+          display:flex;
+          justify-content:center;
+          flex-wrap:wrap;
+          gap:10px;
+          margin-bottom:45px;
+        "
+      >
+      </div>
+
+
+      <!-- PRODUCTS -->
+      <div id="products" class="product-grid">
+
+        <p style="color:#aaa;">
+          Loading collection...
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="footer-logo">
+      A M SAREES CENTRE
+    </div>
+
+    <p>
+      Premium Sarees • Wholesale Collection
+    </p>
+
+    <p>
+      Hyderabad, Telangana
+    </p>
+
+    <p>
+      WhatsApp: 9395142435
+    </p>
+
+    <p class="copyright">
+      © 2026 A M Sarees Centre. All Rights Reserved.
+    </p>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
