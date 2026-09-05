@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Product | A M Sarees Centre</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <style>
+
+    .product-details {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 0;
+    }
+
+    .product-detail-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .detail-image-box {
+      width: 100%;
+      height: 650px;
+      background: #050505;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .detail-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .detail-info {
+      padding: 20px;
+    }
+
+    .detail-category {
+      color: #d4af37;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .detail-name {
+      color: #f5f1e8;
+      font-size: 42px;
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .detail-price {
+      color: #d4af37;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .detail-quantity {
+      color: #aaa;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .detail-qty {
+      width: 100px;
+      padding: 13px;
+      background: #080808;
+      border: 1px solid #d4af37;
+      color: white;
+      font-family: inherit;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      color: #aaa;
+      text-decoration: none;
+      border-bottom: 1px solid #555;
+      padding-bottom: 4px;
+    }
+
+    .back-button:hover {
+      color: #d4af37;
+      border-color: #d4af37;
+    }
+
+    .loading-product {
+      text-align: center;
+      color: #aaa;
+      padding: 100px 20px;
+    }
+
+    @media (max-width: 800px) {
+
+      .product-detail-box {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .detail-image-box {
+        height: 500px;
+      }
+
+      .detail-name {
+        font-size: 34px;
+      }
+
+      .product-details {
+        padding: 50px 0;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="logo">
+
+      A M
+
+      <span>
+        SAREES CENTRE
+      </span>
+
+    </div>
+
+
+    <nav>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="products.html">
+        Shop
+      </a>
+
+      <a href="admin.html">
+        Admin
+      </a>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- PRODUCT -->
+
+  <main>
+
+    <section class="product-details">
+
+      <div
+        id="product"
+        class="loading-product"
+      >
+
+        Loading product...
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-logo">
+      A M SAREES CENTRE
+    </div>
+
+    <p>
+      Premium Sarees • Wholesale Collection
+    </p>
+
+    <p>
+      Hyderabad, Telangana
+    </p>
+
+    <p>
+      WhatsApp: 9395142435
+    </p>
+
+    <p class="copyright">
+      © 2026 A M Sarees Centre. All Rights Reserved.
+    </p>
+
+  </footer>
+
+
+
+  <script>
+
+    let currentProduct = null;
+
+
+    async function loadProduct() {
+
+      const box =
+        document.getElementById("product");
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const id =
+        params.get("id");
+
+
+      if (!id) {
+
+        box.innerHTML = `
+          <h2>Product not found</h2>
+          <a href="products.html"
+             class="back-button">
+            ← Back to Shop
+          </a>
+        `;
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch("/api/products");
+
+
+        if (!response.ok) {
+          throw new Error(
+            "Could not load products"
+          );
+        }
+
+
+        const products =
+          await response.json();
+
+
+        currentProduct =
+          products.find(
+            product =>
+              String(product.id) === String(id)
+          );
+
+
+        if (!currentProduct) {
+
+          box.innerHTML = `
+            <h2>Product not found</h2>
+
+            <a
+              href="products.html"
+              class="back-button"
+            >
+              ← Back to Shop
+            </a>
+          `;
+
+          return;
+
+        }
+
+
+        showProduct(currentProduct);
+
+
+      } catch (error) {
+
+        console.log(error);
+
+
+        box.innerHTML = `
+          <h2>
+            Product will appear soon.
+          </h2>
+
+          <a
+            href="products.html"
+            class="back-button"
+          >
+            ← Back to Shop
+          </a>
+        `;
+
+      }
+
+    }
+
+
+
+    function showProduct(product) {
+
+      const box =
+        document.getElementById("product");
+
+
+      box.className =
+        "product-detail-box";
+
+
+      box.innerHTML = `
+
+        <div class="detail-image-box">
+
+          <img
+            src="${escapeHTML(product.image)}"
+            alt="${escapeHTML(product.name)}"
+            class="detail-image"
+          >
+
+        </div>
+
+
+        <div class="detail-info">
+
+          <div class="detail-category">
+
+            ${escapeHTML(
+              product.category || "Sarees"
+            )}
+
+          </div>
+
+
+          <h1 class="detail-name">
+
+            ${escapeHTML(product.name)}
+
+          </h1>
+
+
+          <div class="detail-price">
+
+            ₹${escapeHTML(product.price)}
+
+          </div>
+
+
+          <div class="detail-quantity">
+
+            Quantity
+
+          </div>
+
+
+          <input
+            type="number"
+            id="productQty"
+            value="1"
+            min="1"
+            class="detail-qty"
+          >
+
+
+          <button
+            class="btn"
+            onclick="orderProduct()"
+          >
+
+            ORDER ON WHATSAPP
+
+          </button>
+
+
+          <a
+            href="products.html"
+            class="back-button"
+          >
+
+            ← Back to Shop
+
+          </a>
+
+        </div>
+
+      `;
+
+    }
+
+
+
+    function orderProduct() {
+
+      if (!currentProduct) return;
+
+
+      const quantity =
+        document.getElementById(
+          "productQty"
+        ).value;
+
+
+      const message =
+`🛍️ A M SAREES CENTRE
+
+Product: ${currentProduct.name}
+Price: ₹${currentProduct.price}
+Quantity: ${quantity}
+
+Product Image:
+${currentProduct.image}
+
+I want to order this saree.`;
+
+
+      const url =
+        "https://wa.me/919395142435?text=" +
+        encodeURIComponent(message);
+
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+    }
+
+
+
+    function escapeHTML(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadProduct
+    );
+
+  </script>
+
+
+</body>
+
+</html>
