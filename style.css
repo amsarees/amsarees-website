@@ -1,0 +1,402 @@
+/* ================================
+   A M SAREES CENTRE
+   PREMIUM BLACK & GOLD DESIGN
+================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #080808;
+  color: #f5f1e8;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.header {
+  width: 100%;
+  min-height: 85px;
+  padding: 18px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  background: #080808;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  color: #d4af37;
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  line-height: 1;
+}
+
+.logo span {
+  display: block;
+  margin-top: 7px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #f1e6c8;
+  font-weight: normal;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+nav a {
+  color: #f5f1e8;
+  text-decoration: none;
+  font-size: 15px;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #d4af37;
+}
+
+
+/* ================================
+   HERO
+================================ */
+
+.hero {
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.62),
+      rgba(0, 0, 0, 0.75)
+    ),
+    radial-gradient(
+      circle at center,
+      #30250d 0%,
+      #100e08 38%,
+      #050505 75%
+    );
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 25px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+}
+
+.small-title,
+.section-small {
+  color: #d4af37;
+  font-size: 12px;
+  letter-spacing: 5px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  color: #f7edcf;
+  font-size: clamp(42px, 7vw, 82px);
+  letter-spacing: 5px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero p:not(.small-title) {
+  color: #ddd3ba;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin-bottom: 35px;
+}
+
+.hero-button {
+  display: inline-block;
+  padding: 14px 32px;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.hero-button:hover {
+  background: #d4af37;
+  color: #080808;
+}
+
+
+/* ================================
+   COLLECTION
+================================ */
+
+.collection {
+  width: 90%;
+  max-width: 1400px;
+  margin: auto;
+  padding: 90px 0;
+  text-align: center;
+}
+
+.collection h2 {
+  color: #f5f1e8;
+  font-size: 42px;
+  font-weight: normal;
+  margin-bottom: 50px;
+}
+
+
+/* ================================
+   PRODUCT GRID
+================================ */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  text-align: left;
+}
+
+.card {
+  background: #101010;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 15px;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: #d4af37;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+.product-img {
+  width: 100%;
+  height: 360px;
+  display: block;
+  object-fit: contain;
+  background: #050505;
+  margin-bottom: 18px;
+}
+
+.card h3 {
+  color: #f4e8c5;
+  font-size: 19px;
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #d4af37;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+
+/* ================================
+   QUANTITY
+================================ */
+
+.qty {
+  width: 80px;
+  padding: 10px;
+  background: #080808;
+  border: 1px solid #555;
+  color: white;
+  margin-bottom: 12px;
+}
+
+
+/* ================================
+   BUTTONS
+================================ */
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #d4af37;
+  color: #080808;
+}
+
+.btn-danger {
+  margin-top: 10px;
+  border-color: #a94442;
+  color: #ff817d;
+}
+
+.btn-danger:hover {
+  background: #a94442;
+  color: white;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background: #080808;
+  border: 1px solid #444;
+  color: white;
+}
+
+
+/* ================================
+   FOOTER
+================================ */
+
+footer {
+  text-align: center;
+  padding: 60px 20px 35px;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  background: #050505;
+}
+
+.footer-logo {
+  color: #d4af37;
+  font-size: 24px;
+  letter-spacing: 4px;
+  margin-bottom: 15px;
+}
+
+footer p {
+  color: #aaa18c;
+  font-size: 14px;
+  margin: 7px 0;
+}
+
+footer .copyright {
+  margin-top: 25px;
+  font-size: 12px;
+  color: #69645a;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+  .header {
+    padding: 17px 5%;
+  }
+
+  nav {
+    gap: 15px;
+  }
+
+  nav a {
+    font-size: 12px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero {
+    min-height: 560px;
+  }
+
+  .hero h1 {
+    font-size: 45px;
+  }
+
+  .product-img {
+    height: 300px;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .logo {
+    font-size: 25px;
+  }
+
+  nav {
+    gap: 18px;
+  }
+
+  nav a {
+    font-size: 12px;
+  }
+
+  .hero {
+    min-height: 500px;
+  }
+
+  .hero::before {
+    inset: 15px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    letter-spacing: 3px;
+  }
+
+  .hero p:not(.small-title) {
+    font-size: 16px;
+  }
+
+  .collection {
+    width: 92%;
+    padding: 65px 0;
+  }
+
+  .collection h2 {
+    font-size: 34px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-img {
+    height: 400px;
+  }
+}
