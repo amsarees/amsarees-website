@@ -1,0 +1,9 @@
+{
+  "name": "am-sarees-centre",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "cloudinary": "^2.7.0"
+  }
+}
